@@ -1,0 +1,107 @@
+// ************************************* CONFIGURANDO O WEBPACK ******************************************* //
+// *********************************************************************************************************//
+//**********************************************************************************************************//
+
+ /* Webpack é um serviço que possibilita utilizar vários arquivos JS e de outros tipos (Json, Css etc...) 
+ * na construção de uma aplicação.
+ * Com o webpack, todo o código é transpilado em um único arquivo bundle.js
+ * No ambiente da internet, não é necessário deisponibilizar todo código que escrevemos, bastando apenas 
+ * que o bundle.js esteja disponível.
+ * 
+ Logo, todos as dependências que geramos até aqui, devem ficar restritas apenas ao contexto de desenvolvimento
+ * 
+ *** 1) vamos então ao package.json para mudar dpendencies para devDependencies
+ * 
+ *** 2) Hora de instalar o webpack:
+ * vamos ao terminal, e damos a instrução para a instalação acrescentando o -D para que essa instalação se 
+ * apenas restrinja às dependências de desenvolvimento.
+ *        
+ *                          yarn add webpack webpack-cli -D
+ * 
+ * assim a instalação dos pacotes é feita no node_modules e sua ativação é feita dentro do nosso objeto 
+ * devDependencies, lá no package.json
+ * 
+ *** 3) Hora de criar um arquivo de configuração do webpack na nossa pasta curso-es6. O nome do arquivo 
+ * tem que ser: 
+ *                                webpack.config.js
+ * 
+ *** 4) Bora configurar o webpack.config como disposto abaixo
+ *        
+  module.exports = {
+  entry: './main.js',
+  output: {
+    path: __dirname,
+    filename: 'bundle.js'
+  },
+  module: {
+    rules: [
+          {
+            test: /\.js$/, //                    <== regular expression ( '\' = anything, '$' = end )
+            exclude: /node_modules/,             <== não quero que o babel execute arquivos dessa pasta
+            use: {
+              loader: 'babel-loader',             <== existem outros loaders, mas por enquanto só esse tá bom
+          }
+        }
+      ],
+    },
+  };
+
+module.exports => disponibilizar 
+entry ==> qual o nosso arquivo principal?
+output ==> pra qual lugar eu devo mandar o código convertido?
+--dirname ==> variável global que se refera ao diretório onde está contido o nosso arquivo webpack.config.js
+filename ==> qual o arquivo que contém as conversões legíveis em ES5 e versões mais antigas
+module => rules ==> como o webpack deve se comportar quando o usuário quiser importar novos arquivos . js
+*
+* 
+*** 5) bora instalar o babel-loader! no Terminal...
+             
+*                              yarn add babel-loader -D
+
+Pronto! Já temos o babel-loader no nosso package.json                      
+
+***6) Novamente no nosso package.json, agora dentro do objeto 'scripts', vamos alterar o valor da 
+propriedade "dev". Lembrando que "dev"é quem chama nosso arquivo main.js. 
+Vamos mudar de...
+
+*                      "dev": "babel ./main.js -o ./bundle.js -w",
+
+para...
+
+*                      "dev": "webpack --mode=development -w",
+
+
+***7) Tudo pronto! Põe pra rodar com:
+
+*                             webpack --mode=development -w
+
+e o terminal responde...
+*                            webpack is watching the files…
+*
+ *                           Hash: 90c4a9c3d89c7c86ad61
+  *                          Version: webpack 4.42.1
+   *                         Time: 1231ms
+    *                        Built at: 04/02/2020 1:16:30 PM
+     *                           Asset      Size  Chunks             Chunk Names
+      *                      bundle.js  3.74 KiB    main  [emitted]  main
+       *                     Entrypoint main = bundle.js
+        *                      [./main.js] 0 bytes {main} [built]
+          *
+*
+***8) Hora de testar!
+*
+*   crie o arquivo funcoes.js no mesmo nível do main
+nele escreva a funcao:
+
+*               export function soma(a, b){
+*                  return a + b;
+*               }
+
+ e vamos chamar essa função no main.js pra ver se nosso export/import tá rolando legal
+*
+*            import { soma } from './funcoes';
+*
+*            console.log(soma(20, 3));
+*
+*
+          */
