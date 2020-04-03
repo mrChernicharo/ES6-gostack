@@ -1,0 +1,21 @@
+AXIOS
+
+axios é uma biblioteca que dá acesso a uma api que nos permite trabalhar com requisições
+assíncronas como protocolos http
+
+começamos instalando o axios:
+* Repare que não é necesário usar o -D pois não queremos que ele fique restrito
+a nossa dependência de desenvolvimento 
+
+*                 yarn add axios
+
+uma vez instalado o axios, a primeira coisa que devemos fazer é importá-lo
+
+*               import axios from 'axios'
+
+depois a gente testa o funcionamento criando a classe Api no script main2.js
+
+o axios monta a url juntando a url da api do github com o nome do usuário
+
+se tudo estiver certo ele retorna os dados do usuário, senão, ele entra
+no fluxo catch() e exibe o erro

@@ -1,0 +1,66 @@
+/* 
+O conceito Async / Await é uma
+nova forma de trabalhar com programação assíncrona no Javascript.
+
+até o ES7 a forma de realizar ações assíncronas era através das promises
+
+abaixo temos o exemplo de uma promise que basicamente exibe 'OK!' depois
+de aguardar dois segundos
+
+esse conceito é muito usado quando trabalhamos com requisições, 
+seja pra uma api, pra um servidor backend
+
+repare que a sintaxe padrão da promise tem .then() .catch()
+
+
+//sintaxe padrao
+
+const minhaPromise = () => new Promise((resolve, reject) => {
+  setTimeout(()=> { resolve('OK!') }, 2000);
+});
+
+minhaPromise()
+  .then(response =>{
+    console.log(response);
+})
+  .catch(err => {
+
+  });
+
+
+// e com a nova sintaxe async/await fica assim:
+
+const minhaPromise2 = () => new Promise((resolve, reject) => {
+  setTimeout(()=> { resolve('OK2!') }, 2000);
+});
+
+async function executaPromise() {
+  const response = await minhaPromise2();
+  console.log(response)
+}
+
+executaPromise();
+
+
+*** Para usar o async await no babel (para que seja compreensível pra browsers
+que não entendem ES8) precisamos instalar o plugin transform-async-to-generator:
+
+*                yarn add @babel/plugin-transform-async-to-generator -D
+
+uma vez instalado, precisamos declarar o plugin dentro do nosso arquivo .babelrc
+
+*** O próximo passo é baixar o polyfill, que traz novas funcionalidades pro nosso babel
+
+*                        yarn add @babel/polyfill
+
+após instalar, vamos incluir ele no campo entry no arquivo webpack.config.js, transformando
+o entry num array onde o polyfill vem antes do path do script que queremos abrir
+
+
+
+
+A vantagem do async/await é que a chamada da requisição assíncrona fica bem menos verbosa,
+principalmente quando queremos realizar múltiplas requisições. Se fossemos usar o esquema antigo, 
+teríamos que ficar fazendo milhares de .then() .catch()
+
+CRIAR UMA ASYNC FUNCTION SEMPRE RETORNA UMA PROMISE!
