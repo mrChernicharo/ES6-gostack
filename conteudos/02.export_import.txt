@@ -1,0 +1,85 @@
+************************  EXPORT & IMPORT ********************************
+
+Há várias maneiras de importar e exportar arquivos e funções
+vamos ter dois arquivos: o main.js e o funcoes.js
+e para entender a dinâmica de exports e imports, vamos comparar o conteúdo dos arquivos
+
+
+
+|   funcoes.js                             |   main.js                                    
+|__________________________________________|___________________________________________
+
+1) Exportando a função soma()              |   Importando a função soma() 
+__________________________________________ | __________________________________________
+
+export function soma(a, b){                   import { soma } from './funcoes';              
+  return a + b;                                 console.log(soma(2, 3));
+}
+
+_______________________________________________________________________________________
+
+2) Exportando e importando mais funções de uma vez só                                          
+__________________________________________ | __________________________________________
+                                            
+export function soma(a, b){                |  import { soma, subtracao } from './funcoes';  
+  return a + b;                                  console.log(soma(2, 3)); 
+}                                                console.log(subtracao(5, 3));
+
+export function subtracao(a, b){
+  return a - b;
+}
+
+_______________________________________________________________________________________
+
+3) usando export default:
+* só dá pra ter um export default por arquivo
+* no import, podemos renomear a função importada como quisermos
+__________________________________________ | __________________________________________
+
+export default function soma(a, b){        |  import somaFunction from './funcoes';  
+  return a + b;                                 console.log(somaFunction(2, 3));
+}  
+
+_______________________________________________________________________________________
+
+4) renomear uma função importada sem o export default
+* nesse caso usamos o token 'as'
+__________________________________________ | __________________________________________
+export function soma(a, b){                |   import { soma as somaFunction , subtracao } from './funcoes';  
+  return a + b;                                  console.log(somaFunction(2, 3)); 
+}
+
+export function subtracao(a, b){
+  return a - b;
+}
+
+_______________________________________________________________________________________
+
+5) podemos ter um export default e vários outros exports
+* a função com export default pode ser acessada diretamente no main.js,
+* Já as demais funções precisam ser passadas na forma de objeto {}
+__________________________________________ | __________________________________________
+export default function soma(a, b){        |   import soma, { subtracao , multiplicacao } from './funcoes';  
+  return a + b;                                  console.log(somaFunction(2, 3)); 
+}
+export function subtracao(a, b){
+  return a - b;
+}
+export function multiplicacao(a, b){
+  return a * b;
+}
+
+_______________________________________________________________________________________
+
+6) Importando todas as funções do arquivo funcoes.js na forma de objetos, 
+Assim, acessamos as funções com a sintaxe de ponto "."
+__________________________________________ | __________________________________________
+export function soma(a, b){                |   import * as funcoes from './funcoes';  
+  return a + b;                                  console.log(funcoes.soma(2, 3)); 
+}                                                console.log(funcoes.subtracao(2, 3)); 
+export function subtracao(a, b){                 console.log(funcoes.multiplicacao(2, 3)); 
+  return a - b;
+}
+export function multiplicacao(a, b){
+  return a * b;
+}

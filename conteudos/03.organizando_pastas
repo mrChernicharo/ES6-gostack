@@ -1,0 +1,86 @@
+
+1) começamos criando as pastas src e public. A primeira pra abrigar os arquivos em que o webpack 
+tem que ficar de olho, e a segunda pros arquivos públicos, assim.
+
+index.html ==> ./public             main.js ==> ./src
+
+
+como estava o arquivo webpack.config.js ...
+
+module.exports = {
+  entry: './main.js',
+  output: {
+    path: __dirname,
+    filename: 'bundle.js'
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/, // <== regular expression ( '\' = anything, '$' = end )
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+        }
+      }
+    ],
+  },
+};
+
+2) vamos ajustar esse arquivo webpack.config.js ajustando o entry pro novo path do main.js e em seguida 
+acrescentamos o diretório /public ao path do nosso output.
+Daí o entry fica assim...
+*                           entry: '.src/main.js',
+*
+
+E o output assim...
+*                           output: {
+*                             path: __dirname + '/public' ,
+*                             filename: 'bundle.js'  
+*                           },
+
+
+3) instale o dev-server numa dependencia de desenvolvimento com o "-D"
+Joga no terminal:
+*                             yarn add webpack-dev-server -D
+
+4) Após a instalação, vamos acrescentar mais uma configuração no nosso webpack.config.js
+content base é o caminho onde será aberto o servidor da nossa aplicação 
+normalmente passamos o path do nosso html
+
+devServer:{
+    contentBase: __dirname + '/public',
+  },
+
+5) Mudamos a propriedade "dev" no package.json 
+de... 
+*                    "dev":"webpack --mode=development -w"
+para...
+*                    "dev":"webpack-dev-server --mode=development"  
+
+6) Salvando tudo e pondo pra rodar com 'yarn dev' podemos ver que temos um servidor rodando no nosso
+localhost:8080 
+
+*** Note que no index.html estamos importando o arquivo 'bundle.js'...Só que esse arquivo não existe mais 
+em nenuma pasta da nossa aplicação!
+Isso acontece pq o webServer embute automaticamente o bundle.js no html sem precisar criar esse arquivo
+na nossa estrutura de pastas.
+Inclusive, se vc abrir o inspecionar no navegador, é possível abrir esse arquivo, porém, a gente não vê
+mais ele fisicamente dentro da pasta
+
+7) Mas e quando eu quiser jogar meu projeto na internet?
+Como ter o meu bundle.js?
+
+resposta:
+
+Vá no package.json e crie um novo comando dentro do objeto "scripts", especificando o modo 
+de produção (e não mais o de desenvolvimento)
+
+fazemos então...            "build":"webpack --mode=production"
+
+e pra rodar, vá no Terminal e escreva a nova instrução:
+
+*                           yarn build
+
+8) Agora sim! O arquivo 'bundle.js' foi criado na pasta public configuradinho
+
+OBS: A vantagem do webpack é o live reload
